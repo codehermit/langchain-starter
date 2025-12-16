@@ -7,7 +7,7 @@ print(os.getenv("API_KEY"))
 print(os.getenv("BASE_URL"))
 
 model = init_chat_model(
-    "qwen-turbo",
+    "deepseek-v3.2",
     model_provider="openai",
     api_key=os.getenv("API_KEY"),
     base_url=os.getenv("BASE_URL"),
