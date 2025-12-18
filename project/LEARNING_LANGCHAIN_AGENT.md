@@ -66,7 +66,7 @@
 - **文档加载（Document Loaders）**
   - 从本地 `txt / md / pdf / docx` 等加载文本成 `Document` 对象。
 - **文本分块（Text Splitter）**
-  - 将长文档切分为合适大小的 chunk，便于向量化和检索。
+  - 将长文档切分为合适大小的 chunk，便于向量化和检索。0
 - **向量存储与检索器（Vector Store & Retriever）**
   - 常用：`FAISS`、`Chroma` 等。
   - 将文档向量化后存入向量库，通过相似度检索相关片段。
