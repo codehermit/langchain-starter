@@ -110,7 +110,7 @@ Agent 的本质：**大模型 + 一组工具（Tools） + 决策逻辑**。
     - 计算器：执行加减乘除。
     - HTTP 请求工具：访问第三方接口。
 - **Agent & AgentExecutor**
-  - 在 LangChain 1.0 中，用官方推荐的 agent 创建方法（名称可能是 `create_react_agent`、`create_tool_calling_agent` 等，以文档为准）。
+  - 在 LangChain 1.0 中，用官方推荐的 agent 创建方法create_agent`
   - 流程：
     1. 用户输入任务。
     2. 模型分析：是否需要工具？需要哪个工具？
