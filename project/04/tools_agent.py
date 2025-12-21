@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 from langchain_core.tools import tool
 from langchain.agents import create_agent
-from chat_models import init_chat_model
+from langchain.chat_models import init_chat_model
 from datetime import datetime
 
 load_dotenv()
@@ -27,10 +27,11 @@ def mock_weather(city: str) -> str:
 agent = create_agent(
     model,
     tools=[get_current_time, simple_calculator, mock_weather],
-    verbose=True,
+    debug=True,
+    system_prompt="你是一个智能助手，可以查询天气和进行数学计算。"
 )
 
-question = "What is the weather in Beijing?"
+question = "帮我算一下 1314 × 520"
 print(f"👤 用户: {question}\n")
 
 result = agent.invoke({

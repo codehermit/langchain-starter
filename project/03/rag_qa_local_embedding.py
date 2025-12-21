@@ -33,7 +33,7 @@ FAQ_FILE = DOCS_DIR / "faq.md"
 def init_model():
     """初始化聊天模型"""
     return init_chat_model(
-        "deepseek-v3.2",
+        "DeepSeek-R1-0528-Qwen3-8B",
         model_provider="openai",
         api_key=os.getenv("API_KEY"),
         base_url=os.getenv("BASE_URL")
