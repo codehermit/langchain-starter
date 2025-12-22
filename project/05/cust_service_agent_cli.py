@@ -11,6 +11,7 @@
 
 import os
 from pathlib import Path
+import re
 from dotenv import load_dotenv
 from langchain.chat_models import init_chat_model
 from langchain_core.tools import tool
@@ -18,6 +19,8 @@ from langchain.agents import create_agent
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_core.chat_history import InMemoryChatMessageHistory
 
 load_dotenv()
 
@@ -29,6 +32,8 @@ VECTOR_STORE_PATH = DATA_DIR / "faiss_index_local"
 # 全局变量，用于缓存模型和检索器
 _model = None
 _retriever = None
+_session_histories = {}
+_MAX_MESSAGES = 12
 
 
 def init_model():
@@ -51,6 +56,16 @@ def init_embeddings():
         model_kwargs={'device': 'cpu'},
         encode_kwargs={'normalize_embeddings': True}
     )
+
+
+def get_session_history(session_id: str) -> InMemoryChatMessageHistory:
+    history = _session_histories.get(session_id)
+    if history is None:
+        history = InMemoryChatMessageHistory()
+        _session_histories[session_id] = history
+    if len(history.messages) > _MAX_MESSAGES:
+        history.messages = history.messages[-_MAX_MESSAGES:]
+    return history
 
 
 def get_retriever():
@@ -160,9 +175,20 @@ def query_order_status(order_id: str) -> str:
         }
     }
     
-    # 如果订单号在 mock 数据中，返回对应信息
-    if order_id in mock_orders:
-        order = mock_orders[order_id]
+    # 规范化订单号
+    oid_raw = order_id or ""
+    oid_digits = re.sub(r"\D", "", oid_raw)
+    resolved_id = None
+    if oid_digits in mock_orders:
+        resolved_id = oid_digits
+    else:
+        for k in mock_orders.keys():
+            if k in oid_raw:
+                resolved_id = k
+                break
+    # 返回对应信息或默认
+    if resolved_id in mock_orders:
+        order = mock_orders[resolved_id]
         return f"""订单号：{order_id}
 订单状态：{order['status']}
 下单时间：{order['order_time']}
@@ -226,9 +252,30 @@ def query_shipping_info(order_id: str) -> str:
         }
     }
     
-    # 如果订单号在 mock 数据中，返回对应信息
-    if order_id in mock_shipping:
-        shipping = mock_shipping[order_id]
+    # 规范化订单号或快递单号，尽可能解析到订单号
+    oid_raw = order_id or ""
+    oid_digits = re.sub(r"\D", "", oid_raw)
+    resolved_id = None
+    if oid_digits in mock_shipping:
+        resolved_id = oid_digits
+    else:
+        for k in mock_shipping.keys():
+            if k in oid_raw:
+                resolved_id = k
+                break
+        if resolved_id is None:
+            for k, v in mock_shipping.items():
+                tn = v.get("tracking_number", "")
+                tn_digits = re.sub(r"\D", "", tn)
+                if oid_raw and oid_raw in tn:
+                    resolved_id = k
+                    break
+                if oid_digits and oid_digits == tn_digits:
+                    resolved_id = k
+                    break
+    # 返回对应信息或默认
+    if resolved_id in mock_shipping:
+        shipping = mock_shipping[resolved_id]
         result = f"""订单号：{order_id}
 快递公司：{shipping['carrier']}
 快递单号：{shipping['tracking_number']}
@@ -274,6 +321,12 @@ def create_customer_service_agent():
 - 回答要友好、专业、准确
 - 在回答中简要说明你使用了什么工具来帮助用户（例如："我查询了您的订单信息..."）
 
+对话记忆：
+- 记住用户昵称与偏好（如语气、简洁程度），在后续回复中保持一致
+- 记住当前会话中最近提到的订单号作为“上下文订单号”
+- 当用户未明确给出订单号时，默认使用上下文订单号进行查询
+- 如上下文中不存在订单号，礼貌地引导用户提供
+
 现在开始为用户提供帮助吧！"""
     )
     
@@ -289,6 +342,8 @@ def main():
     
     # 创建 Agent
     agent = create_customer_service_agent()
+    session_id = "cli"
+    session_messages = []
     
     print("\n" + "=" * 60)
     print("系统就绪！我是您的智能客服助手，可以帮您：")
@@ -310,17 +365,18 @@ def main():
             if not user_input:
                 continue
             
-            # 调用 Agent
-            result = agent.invoke({
-                "messages": [
-                    {"role": "user", "content": user_input}
-                ]
-            })
+            session_messages.append({"role": "user", "content": user_input})
+            if len(session_messages) > _MAX_MESSAGES:
+                session_messages = session_messages[-_MAX_MESSAGES:]
+            result = agent.invoke({"messages": session_messages})
             
             # 获取最后一条消息（AI 的回答）
             answer = result["messages"][-1].content
             print(f"\n🤖 客服：{answer}\n")
             print("-" * 60 + "\n")
+            session_messages.append({"role": "assistant", "content": answer})
+            if len(session_messages) > _MAX_MESSAGES:
+                session_messages = session_messages[-_MAX_MESSAGES:]
             
         except KeyboardInterrupt:
             print("\n\n感谢使用，再见！")
