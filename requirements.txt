@@ -21,3 +21,7 @@ python-dotenv>=1.0.0
 # pypdf>=3.0.0  # PDF 支持
 # python-docx>=1.0.0  # Word 支持
 
+# Web API
+fastapi>=0.111.0
+uvicorn>=0.30.0
+

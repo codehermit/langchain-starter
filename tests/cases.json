@@ -1,0 +1,40 @@
+[
+  {
+    "id": "case_refund",
+    "messages": [
+      { "role": "user", "content": "如何申请退款？" }
+    ],
+    "expect_keywords": ["退款", "申请"]
+  },
+  {
+    "id": "case_ship_1",
+    "messages": [
+      { "role": "user", "content": "帮我查一下订单 123456 的物流情况。" }
+    ],
+    "expect_keywords": ["顺丰", "运输中", "SF123456"]
+  },
+  {
+    "id": "case_ship_2",
+    "history": [
+      { "role": "user", "content": "帮我查一下订单 123456 的物流情况。" }
+    ],
+    "messages": [
+      { "role": "user", "content": "那大概什么时候能到？" }
+    ],
+    "expect_keywords": ["预计", "2024"]
+  },
+  {
+    "id": "case_status",
+    "messages": [
+      { "role": "user", "content": "查询订单 123456 状态" }
+    ],
+    "expect_keywords": ["订单状态", "已发货"]
+  },
+  {
+    "id": "case_account",
+    "messages": [
+      { "role": "user", "content": "会员有哪些权益？" }
+    ],
+    "expect_keywords": ["会员", "权益"]
+  }
+]
