@@ -1,0 +1,11 @@
+{"timestamp": "2025-12-26 16:47:27", "level": "INFO", "trace_id": "06a33052-f381-4697-88b5-a84d3681b7b2", "session_id": "", "type": "access", "path": "/c_hello", "method": "GET", "status": 200, "latency_ms": 1}
+{"timestamp": "2025-12-26 16:47:40", "level": "INFO", "trace_id": "145311a0-02e7-4a48-9361-e0599b5af2aa", "session_id": "", "type": "access", "path": "/c_hello", "method": "GET", "status": 200, "latency_ms": 0}
+{"timestamp": "2025-12-26 16:47:54", "level": "INFO", "trace_id": "719c7efd-48c1-4464-97cb-147362b2032a", "session_id": "", "type": "access", "path": "/c_hello", "method": "GET", "status": 200, "latency_ms": 0}
+{"timestamp": "2025-12-26 16:48:07", "level": "INFO", "trace_id": "be3e2a7d-069d-4f5c-ab93-593a0d08d84d", "session_id": "", "type": "access", "path": "/c_hello", "method": "GET", "status": 200, "latency_ms": 0}
+{"timestamp": "2025-12-26 16:48:20", "level": "INFO", "trace_id": "63a294f1-3879-4beb-b750-99cb073bd313", "session_id": "", "type": "access", "path": "/c_hello", "method": "GET", "status": 200, "latency_ms": 0}
+{"timestamp": "2025-12-26 16:48:33", "level": "INFO", "trace_id": "4d0ef164-b402-4083-8819-f4b286efcc2d", "session_id": "", "type": "access", "path": "/c_hello", "method": "GET", "status": 200, "latency_ms": 0}
+{"timestamp": "2025-12-26 16:48:46", "level": "INFO", "trace_id": "f0a83f80-c410-492d-bfa9-bdd64fe9a88c", "session_id": "", "type": "access", "path": "/c_hello", "method": "GET", "status": 200, "latency_ms": 0}
+{"timestamp": "2025-12-26 16:48:59", "level": "INFO", "trace_id": "82549106-f03a-45f9-89c3-0cc67fa9d8b5", "session_id": "", "type": "access", "path": "/c_hello", "method": "GET", "status": 200, "latency_ms": 0}
+{"timestamp": "2025-12-26 16:49:12", "level": "INFO", "trace_id": "e72654ed-104a-4fe6-bd46-d4b44e241722", "session_id": "", "type": "access", "path": "/c_hello", "method": "GET", "status": 200, "latency_ms": 0}
+{"timestamp": "2025-12-26 16:49:26", "level": "INFO", "trace_id": "e134da4f-9d27-48cf-83af-829fdbf8cdb3", "session_id": "", "type": "access", "path": "/c_hello", "method": "GET", "status": 200, "latency_ms": 0}
+{"timestamp": "2025-12-26 16:49:39", "level": "INFO", "trace_id": "11caaa62-4316-4b5c-89f9-7e8cd89109dd", "session_id": "", "type": "access", "path": "/c_hello", "method": "GET", "status": 200, "latency_ms": 0}
