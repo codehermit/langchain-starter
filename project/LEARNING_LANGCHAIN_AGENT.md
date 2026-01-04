@@ -110,7 +110,7 @@ Agent 的本质：**大模型 + 一组工具（Tools） + 决策逻辑**。
     - 计算器：执行加减乘除。
     - HTTP 请求工具：访问第三方接口。
 - **Agent & AgentExecutor**
-  - 在 LangChain 1.0 中，用官方推荐的 agent 创建方法create_agent`
+  - 在 LangChain 1.0 中，用官方推荐的 agent 创建方法 create_agent`
   - 流程：
     1. 用户输入任务。
     2. 模型分析：是否需要工具？需要哪个工具？
@@ -286,7 +286,43 @@ Agent 的本质：**大模型 + 一组工具（Tools） + 决策逻辑**。
 
 ---
 
-## 9. 建议的项目结构示例
+## 9. 阶段九：进阶 - 拥抱 LangGraph（3–5 天）
+
+随着业务逻辑变复杂，单一的 `AgentExecutor` 可能不够用（它是黑盒）。LangGraph 允许你把 Agent 拆解为“图（Graph）”，显式控制每一步的流转。
+
+### 9.1 核心概念
+
+- **State（状态）**
+  - 一个 `TypedDict`，在节点间传递数据（如消息历史、中间变量）。
+- **Node（节点）**
+  - 执行具体逻辑的函数（如：调用模型、执行工具）。
+- **Edge（边）**
+  - 定义节点间的流转方向。
+- **Conditional Edge（条件边）**
+  - 根据节点输出决定下一步去哪里（如：模型决定调用工具 → 去工具节点；模型决定回答 → 结束）。
+
+### 9.2 建议新文件：`project/08/langgraph_agent.py`
+
+- **目标**：重构之前的客服 Agent。
+- **步骤**：
+  1. 定义 `AgentState`（包含 messages, user_info 等）。
+  2. 创建 `call_model` 节点：调用 LLM。
+  3. 创建 `tool_node` 节点：执行工具（可使用 LangGraph 预置的 `ToolNode`）。
+  4. 定义图结构：
+     - `START` → `call_model`
+     - `call_model` → (判断是否调用工具) → `tool_node` / `END`
+     - `tool_node` → `call_model`
+  5. 编译图并运行。
+
+### 9.3 本阶段 checklist
+
+- [ ] 理解 LangGraph 的 State 和 Node。
+- [ ] 成功将客服 Agent 迁移到 LangGraph 架构。
+- [ ] 体会 Graph 相比 Chain/Executor 的可控性优势。
+
+---
+
+## 10. 建议的项目结构示例
 
 随着你一步步实现上述阶段，项目目录可以逐渐演化为：
 
@@ -299,6 +335,7 @@ Agent 的本质：**大模型 + 一组工具（Tools） + 决策逻辑**。
   - `05/cust_service_agent_cli.py`（命令行客服 Agent，带记忆）
   - `06/api_server.py`（对外提供 HTTP API）
   - `07/web_ui/`（前端或 Streamlit）
+  - `08/langgraph_agent.py`（LangGraph 进阶实现）
 - `docs/`
   - `faq.md`（FAQ 知识库示例）
 - `eval/`
@@ -312,7 +349,7 @@ Agent 的本质：**大模型 + 一组工具（Tools） + 决策逻辑**。
 
 ---
 
-## 10. 使用建议
+## 11. 使用建议
 
 - 每完成一个阶段或一个示例文件：
   - 在本学习文档中勾选对应的 checklist。
