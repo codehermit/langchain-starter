@@ -7,7 +7,7 @@
 4. 显示引用的文档片段
 
 申明：rag_qa.py 里用的是 OpenAIEmbeddings + text-embedding-3-small，
-但当前配置的deepseek-v3.2没有这个 embedding 模型，所以会报错。学者如果运行此文件，请配置一个支持embedding的模型。
+但当前配置的deepseek-v4-flash没有这个 embedding 模型，所以会报错。学者如果运行此文件，请配置一个支持embedding的模型。
 """
 
 import os
@@ -33,7 +33,7 @@ FAQ_FILE = DOCS_DIR / "faq.md"
 def init_model():
     """初始化聊天模型"""
     return init_chat_model(
-        "deepseek-v3.2",
+        "deepseek-v4-flash",
         model_provider="openai",
         api_key=os.getenv("API_KEY"),
         base_url=os.getenv("BASE_URL")

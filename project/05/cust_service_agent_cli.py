@@ -41,7 +41,7 @@ def init_model():
     global _model
     if _model is None:
         _model = init_chat_model(
-            "deepseek-v3.2",
+            "deepseek-v4-flash",
             model_provider="openai",
             api_key=os.getenv("API_KEY"),
             base_url=os.getenv("BASE_URL")
