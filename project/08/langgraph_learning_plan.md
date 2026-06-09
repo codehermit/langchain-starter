@@ -17,15 +17,15 @@
 
 对应概念如下：
 
-| 代码位置 | LangGraph 概念 | 要理解的问题 |
-| --- | --- | --- |
-| `AgentState` | State | 图运行时传递什么数据 |
-| `Annotated[..., add_messages]` | Reducer | 多个节点如何合并状态更新 |
-| `call_model` | Node | 节点本质上是接收 state、返回局部更新的函数 |
-| `should_continue` | Conditional routing | 如何根据当前状态决定下一步 |
-| `ToolNode(TOOLS)` | Tool execution | 模型提出工具调用，图负责执行 |
-| `build_graph()` | Graph construction | 节点和边如何组成可执行图 |
-| `graph_app.invoke(state)` | Runtime | 图如何从入口运行到结束 |
+| 代码位置                       | LangGraph 概念      | 要理解的问题                               |
+| ------------------------------ | ------------------- | ------------------------------------------ |
+| `AgentState`                   | State               | 图运行时传递什么数据                       |
+| `Annotated[..., add_messages]` | Reducer             | 多个节点如何合并状态更新                   |
+| `call_model`                   | Node                | 节点本质上是接收 state、返回局部更新的函数 |
+| `should_continue`              | Conditional routing | 如何根据当前状态决定下一步                 |
+| `ToolNode(TOOLS)`              | Tool execution      | 模型提出工具调用，图负责执行               |
+| `build_graph()`                | Graph construction  | 节点和边如何组成可执行图                   |
+| `graph_app.invoke(state)`      | Runtime             | 图如何从入口运行到结束                     |
 
 学习时先不要急着做复杂多 Agent。LangGraph 最重要的直觉是：它不是一个“自动帮你写 Agent 的黑盒”，而是一个“可持久化、可观测、可分支、可循环的状态机框架”。
 
@@ -486,3 +486,23 @@ basic_langgraph.py
 ```
 
 一句话总结：先把 LangGraph 当作“状态机”学，再把它当作“Agent 编排框架”用。
+
+## 综合项目推荐：
+
+1. 智能客服系统
+
+- 多工具支持
+- 会话管理
+- 工具调用路由
+
+2. 多 Agent 协作
+
+- 规划 Agent（制定计划）
+- 执行 Agent（执行工具）
+- 总结 Agent（汇总结果）
+
+3. 复杂工作流
+
+- 数据处理流程
+- 审批流程
+- 多步骤任务
